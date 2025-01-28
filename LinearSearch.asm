@@ -53,14 +53,11 @@ found:
     mov edx,foundLen
     int 80h
     pop ecx
+
+    add ecx,1
     
-    push ecx
-    mov eax,ecx
-    mov ebx,10
-    add eax,1
-    
-    add eax,'0'
-    mov [position],eax
+    add ecx,'0'
+    mov [position],ecx
     
     mov eax,4
     mov ebx,1
