@@ -3,7 +3,6 @@ section .data
     len1 equ $ - prompt1
     prompt2 db 'Enter second number: ', 0
     len2 equ $ - prompt2
-    
     addMsg db 'Addition: ', 0
     addLen equ $ - addMsg
     subMsg db 'Subtraction: ', 0
@@ -18,15 +17,14 @@ section .data
     newline db 0xa
 
 section .bss
-    num1 resb 2         ; First number
-    num2 resb 2         ; Second number
-    result resb 2       ; Result buffer
+    num1 resb 2         
+    num2 resb 2       
+    result resb 2      
 
 section .text
     global _start
 
 _start:
-    ; Get first number
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt1
@@ -39,7 +37,6 @@ _start:
     mov edx, 2
     int 80h
     
-    ; Get second number
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt2
@@ -52,13 +49,7 @@ _start:
     mov edx, 2
     int 80h
     
-    ; Convert ASCII to numbers
-    mov al, [num1]
-    sub al, '0'
-    mov bl, [num2]
-    sub bl, '0'
-    
-    ; Addition
+    ;Addition
     mov eax, 4
     mov ebx, 1
     mov ecx, addMsg
@@ -196,7 +187,6 @@ _start:
     mov edx, 1
     int 80h
     
-    ; Exit program
     mov eax, 1
     mov ebx, 0
     int 80h

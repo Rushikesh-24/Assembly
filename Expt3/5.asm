@@ -6,50 +6,44 @@ section .data
     newline db 0xa
     
 section .bss
-    num resb 2         ; Buffer for input number
-    result resb 2      ; Buffer for displaying numbers
+    num resb 2         
+    result resb 2     
 
 section .text
     global _start
 
 _start:
-    ; Display prompt
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt
     mov edx, promptLen
     int 80h
     
-    ; Read input number
     mov eax, 3
     mov ebx, 0
     mov ecx, num
     mov edx, 2
     int 80h
     
-    ; Display message
     mov eax, 4
     mov ebx, 1
     mov ecx, msg
     mov edx, msgLen
     int 80h
     
-    ; Get input number in AL and convert from ASCII
     mov al, [num]
-    sub al, '0'        ; Convert from ASCII to number
+    sub al, '0'     
     
-    ; Counter for 4 numbers
-    mov cl, 4          ; We'll display 4 numbers
+    mov cl, 4          
 
 print_loop:
-    inc al             ; Increment the number
+    inc al             
     
-    ; Convert to ASCII and store
+    
     push ax            ; Save the current number
-    add al, '0'        ; Convert to ASCII
-    mov [result], al   ; Store for printing
+    add al, '0'       
+    mov [result], al   
     
-    ; Print number
     push ecx           ; Save counter
     mov eax, 4
     mov ebx, 1
@@ -57,21 +51,19 @@ print_loop:
     mov edx, 1
     int 80h
     
-    ; Print newline
     mov eax, 4
     mov ebx, 1
     mov ecx, newline
     mov edx, 1
     int 80h
-    pop ecx            ; Restore counter
+    pop ecx           
     
-    pop ax             ; Restore number
+    pop ax            
     
-    ; Loop control
     dec cl             ; Decrement counter
-    jnz print_loop     ; If counter not zero, continue loop
+    jnz print_loop    
 
 exit:
-    mov eax, 1         ; sys_exit
-    mov ebx, 0         ; Exit code 0
+    mov eax, 1         
+    mov ebx, 0         
     int 80h

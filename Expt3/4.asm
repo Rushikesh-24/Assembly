@@ -10,29 +10,27 @@ section .data
     newline db 0xa
     
 section .bss
-    num1 resb 2        ; Buffer for first number
-    num2 resb 2        ; Buffer for second number
-    num3 resb 2        ; Buffer for third number
-    sum resb 2         ; Buffer for sum result
+    num1 resb 2        
+    num2 resb 2        
+    num3 resb 2        
+    sum resb 2      
 
 section .text
     global _start
 
 _start:
-    ; First number
-    mov eax, 4         ; sys_write
-    mov ebx, 1         ; stdout
-    mov ecx, prompt1   ; message
-    mov edx, len1      ; length
+    mov eax, 4         
+    mov ebx, 1        
+    mov ecx, prompt1  
+    mov edx, len1      
     int 80h
     
-    mov eax, 3         ; sys_read
-    mov ebx, 0         ; stdin
-    mov ecx, num1      ; input buffer
-    mov edx, 2         ; read 2 bytes (number + newline)
+    mov eax, 3        
+    mov ebx, 0         
+    mov ecx, num1     
+    mov edx, 2         
     int 80h
     
-    ; Second number
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt2
@@ -45,7 +43,6 @@ _start:
     mov edx, 2
     int 80h
     
-    ; Third number
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt3
@@ -58,36 +55,32 @@ _start:
     mov edx, 2
     int 80h
     
-    ; Calculate sum
-    mov al, [num1]     ; Get first number
-    sub al, '0'        ; Convert from ASCII
+    mov al, [num1]    
+    sub al, '0'       
     
-    mov bl, [num2]     ; Get second number
-    sub bl, '0'        ; Convert from ASCII
-    add al, bl         ; Add second to first
+    mov bl, [num2]    
+    sub bl, '0'        
+    add al, bl        
     
-    mov bl, [num3]     ; Get third number
-    sub bl, '0'        ; Convert from ASCII
-    add al, bl         ; Add third to sum
+    mov bl, [num3]    
+    sub bl, '0'       
+    add al, bl         
     
-    add al, '0'        ; Convert back to ASCII
-    mov [sum], al      ; Store result
+    add al, '0'       
+    mov [sum], al     
     
-    ; Display sum message
     mov eax, 4
     mov ebx, 1
     mov ecx, sumMsg
     mov edx, sumLen
     int 80h
     
-    ; Display sum
     mov eax, 4
     mov ebx, 1
     mov ecx, sum
     mov edx, 1
     int 80h
     
-    ; Display newline
     mov eax, 4
     mov ebx, 1
     mov ecx, newline
@@ -95,6 +88,6 @@ _start:
     int 80h
 
 exit:
-    mov eax, 1         ; sys_exit
-    mov ebx, 0         ; Exit code 0
+    mov eax, 1         
+    mov ebx, 0         
     int 80h
