@@ -56,13 +56,13 @@ _start:
     mov edx, addLen
     int 80h
     
-    mov al, [num1]
-    sub al, '0'
-    mov bl, [num2]
-    sub bl, '0'
-    add al, bl
-    add al, '0'
-    mov [result], al
+    mov eax, [num1]
+    sub eax, '0'
+    mov ebx, [num2]
+    sub ebx, '0'
+    add eax, ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1
@@ -83,13 +83,13 @@ _start:
     mov edx, subLen
     int 80h
     
-    mov al, [num1]
-    sub al, '0'
-    mov bl, [num2]
-    sub bl, '0'
-    sub al, bl
-    add al, '0'
-    mov [result], al
+    mov eax, [num1]
+    sub eax, '0'
+    mov ebx, [num2]
+    sub ebx, '0'
+    sub eax, ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1
@@ -110,13 +110,13 @@ _start:
     mov edx, mulLen
     int 80h
     
-    mov al, [num1]
-    sub al, '0'
-    mov bl, [num2]
-    sub bl, '0'
-    mul bl              ; Multiply AL by BL
-    add al, '0'
-    mov [result], al
+    mov eax, [num1]
+    sub eax, '0'
+    mov ebx, [num2]
+    sub ebx, '0'
+    mul ebx              ; Multiply eax by ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1

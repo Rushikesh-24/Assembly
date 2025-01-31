@@ -40,14 +40,14 @@ _start:
     mov edx, 2
     int 80h
     
-    mov al, [num1]      
-    sub al, '0'        
-    mov bl, [num2]     
-    sub bl, '0'        
+    mov eax, [num1]      
+    sub eax, '0'        
+    mov ebx, [num2]     
+    sub ebx, '0'        
     
-    add al, bl        
-    add al, '0'       
-    mov [sum], al     
+    add eax, ebx        
+    add eax, '0'       
+    mov [sum], eax     
     
     mov eax, 4
     mov ebx, 1

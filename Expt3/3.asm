@@ -73,13 +73,13 @@ _start:
     mov edx, rectAreaLen
     int 80h
     
-    mov al, [length]
-    sub al, '0'
-    mov bl, [breadth]
-    sub bl, '0'
-    mul bl
-    add al, '0'
-    mov [result], al
+    mov eax, [length]
+    sub eax, '0'
+    mov ebx, [breadth]
+    sub ebx, '0'
+    mul ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1
@@ -100,15 +100,15 @@ _start:
     mov edx, rectPeriLen
     int 80h
     
-    mov al, [length]
-    sub al, '0'
-    mov bl, [breadth]
-    sub bl, '0'
-    add al, bl
-    mov bl, 2
-    mul bl
-    add al, '0'
-    mov [result], al
+    mov eax, [length]
+    sub eax, '0'
+    mov ebx, [breadth]
+    sub ebx, '0'
+    add eax, ebx
+    mov ebx, 2
+    mul ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1
@@ -189,16 +189,16 @@ _start:
     mov edx, triPeriLen
     int 80h
     
-    mov al, [base]
-    sub al, '0'
-    mov bl, [sideA]
-    sub bl, '0'
-    add al, bl
-    mov bl, [sideC]
-    sub bl, '0'
-    add al, bl
-    add al, '0'
-    mov [result], al
+    mov eax, [base]
+    sub eax, '0'
+    mov ebx, [sideA]
+    sub ebx, '0'
+    add eax, ebx
+    mov ebx, [sideC]
+    sub ebx, '0'
+    add eax, ebx
+    add eax, '0'
+    mov [result], eax
     
     mov eax, 4
     mov ebx, 1

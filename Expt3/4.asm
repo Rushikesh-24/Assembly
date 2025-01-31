@@ -55,19 +55,19 @@ _start:
     mov edx, 2
     int 80h
     
-    mov al, [num1]    
-    sub al, '0'       
+    mov eax, [num1]    
+    sub eax, '0'       
     
-    mov bl, [num2]    
-    sub bl, '0'        
-    add al, bl        
+    mov ebx, [num2]    
+    sub ebx, '0'        
+    add eax, ebx        
     
-    mov bl, [num3]    
-    sub bl, '0'       
-    add al, bl         
+    mov ebx, [num3]    
+    sub ebx, '0'       
+    add eax, ebx         
     
-    add al, '0'       
-    mov [sum], al     
+    add eax, '0'       
+    mov [sum], eax     
     
     mov eax, 4
     mov ebx, 1

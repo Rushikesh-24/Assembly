@@ -31,18 +31,18 @@ _start:
     mov edx, msgLen
     int 80h
     
-    mov al, [num]
-    sub al, '0'     
+    mov eax, [num]
+    sub eax, '0'     
     
-    mov cl, 4          
+    mov ecx, 4          
 
 print_loop:
-    inc al             
+    inc eax             
     
     
-    push ax            ; Save the current number
-    add al, '0'       
-    mov [result], al   
+    push eax            ; Save the current number
+    add eax, '0'       
+    mov [result], eax   
     
     push ecx           ; Save counter
     mov eax, 4
@@ -58,9 +58,9 @@ print_loop:
     int 80h
     pop ecx           
     
-    pop ax            
+    pop eax            
     
-    dec cl             ; Decrement counter
+    dec ecx             ; Decrement counter
     jnz print_loop    
 
 exit:
