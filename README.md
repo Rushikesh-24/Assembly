@@ -1,6 +1,6 @@
 # Microprocessors and Macro Controllers Lab
 
-This repository contains the code and instructions for the Microprocessors and Macro Controllers lab sessions. The code is written in Assembly language and is intended to run on a Linux environment.
+This repository contains the code and instructions for the Microprocessors and Micro Controllers lab sessions. The code is written in Assembly language and is intended to run on a Linux environment.
 
 ## Prerequisites
 
