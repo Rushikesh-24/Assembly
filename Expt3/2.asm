@@ -13,13 +13,13 @@ section .data
     divLen equ $ - divMsg
     remMsg db 'Division - Remainder: ', 0
     remLen equ $ - remMsg
-    
     newline db 0xa
 
 section .bss
     num1 resb 2         
     num2 resb 2       
     result resb 2      
+    result2 resb 2     
 
 section .text
     global _start
@@ -49,7 +49,7 @@ _start:
     mov edx, 2
     int 80h
     
-    ;Addition
+    ; Addition
     mov eax, 4
     mov ebx, 1
     mov ecx, addMsg
@@ -130,7 +130,7 @@ _start:
     mov edx, 1
     int 80h
     
-    ; Division (Quotient)
+    ; Division (Quotient and Remainder)
     mov eax, 4
     mov ebx, 1
     mov ecx, divMsg
@@ -142,10 +142,14 @@ _start:
     mov bl, [num2]
     sub bl, '0'
     mov ah, 0           ; Clear AH for division
-    div bl              ; Divide AL by BL, quotient in AL, remainder in AH
+    div bl              ; Divide, quotient in AL, remainder in AH
+    
     add al, '0'
     mov [result], al
+    add ah, '0'
+    mov [result2], ah
     
+    ; Print Quotient
     mov eax, 4
     mov ebx, 1
     mov ecx, result
@@ -158,26 +162,16 @@ _start:
     mov edx, 1
     int 80h
     
-    ; Division (Remainder)
+
     mov eax, 4
     mov ebx, 1
     mov ecx, remMsg
     mov edx, remLen
     int 80h
-    
-    mov al, [num1]
-    sub al, '0'
-    mov bl, [num2]
-    sub bl, '0'
-    mov ah, 0
-    div bl              ; AH now contains remainder
-    mov al, ah          ; Move remainder to AL
-    add al, '0'
-    mov [result], al
-    
+    ; Print Remainder
     mov eax, 4
     mov ebx, 1
-    mov ecx, result
+    mov ecx, result2
     mov edx, 1
     int 80h
     
@@ -187,6 +181,6 @@ _start:
     mov edx, 1
     int 80h
     
-    mov eax, 1
-    mov ebx, 0
+    mov eax, 1         ; Exit
+    mov ebx, 0         
     int 80h
