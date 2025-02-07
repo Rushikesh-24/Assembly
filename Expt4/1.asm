@@ -5,6 +5,8 @@ section .data
     len2 equ $ - prompt2
     largerMsg db 'Larger number is: ', 0
     largerLen equ $ - largerMsg
+    equalMsg db 'Numbers are equal', 0
+    equalLen equ $ - equalMsg
     newline db 0xa
 
 section .bss
@@ -40,19 +42,20 @@ _start:
     mov edx, 2
     int 80h
     
-    mov eax, [num1]    
-    sub eax, '0'       
+    mov al, [num1]    
+    sub al, '0'       
     
-    mov ebx, [num2]    
-    sub ebx, '0'        
+    mov bl, [num2]    
+    sub bl, '0'        
     
-    cmp eax, ebx
-    jge first
-    mov eax, ebx
+    cmp al, bl
+    jg first
+    je equal
+    mov al, bl
     
 first:
-    add eax, '0'       
-    mov [larger], eax     
+    add al, '0'       
+    mov [larger], al     
     
     mov eax, 4
     mov ebx, 1
@@ -64,6 +67,16 @@ first:
     mov ebx, 1
     mov ecx, larger
     mov edx, 1
+    int 80h
+    jmp exit
+
+equal:
+    add al, '0'       
+    mov [larger], al
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, equalMsg
+    mov edx, equalLen
     int 80h
     
     mov eax, 4

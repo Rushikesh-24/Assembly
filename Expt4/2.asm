@@ -7,6 +7,8 @@ section .data
     len3 equ $ - prompt3
     largerMsg db 'Larger number is: ', 0
     largerLen equ $ - largerMsg
+    equalMsg db 'Numbers are equal', 0
+    equalLen equ $ - equalMsg
     newline db 10
 
 section .bss
@@ -70,13 +72,32 @@ check_num3:
     sub bl, '0'
     
     cmp al, bl
-    jge set_larger
+    jg set_larger
     mov al, bl
     
 set_larger:
     add al, '0'
     mov [larger], al
-    
+
+    mov al, [num1]
+    sub al, '0'
+    mov bl, [num2]
+    sub bl, '0'
+    cmp al, bl
+    jne print_larger
+    mov bl, [num3]
+    sub bl, '0'
+    cmp al, bl
+    jne exit
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, equalMsg
+    mov edx, equalLen
+    int 80h
+    jmp exit
+
+print_larger:
     mov eax, 4
     mov ebx, 1
     mov ecx, largerMsg

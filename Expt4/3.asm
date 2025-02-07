@@ -7,6 +7,8 @@ section .data
     len3 equ $ - prompt3
     smallerMsg db 'Smaller number is: ', 0
     smallerLen equ $ - smallerMsg
+    equalMsg db 'All numbers are equal', 0
+    equalLen equ $ - equalMsg
     newline db 0xa
 
 section .bss
@@ -62,6 +64,7 @@ _start:
     sub ebx, '0'
     
     cmp al, bl
+    je check_num3_equal
     jle num1_smaller
     mov al, bl
     
@@ -89,6 +92,23 @@ num3_smaller:
     mov edx, 1
     int 80h
     
+    jmp print_newline
+
+check_num3_equal:
+    mov bl, [num3]
+    sub bl, '0'
+    cmp al, bl
+    je all_equal
+    jmp num1_smaller
+
+all_equal:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, equalMsg
+    mov edx, equalLen
+    int 80h
+
+print_newline:
     mov eax, 4
     mov ebx, 1
     mov ecx, newline
