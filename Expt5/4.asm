@@ -4,14 +4,14 @@ section .data
     prompt2 db 'Enter the second number: ', 0
     len2 equ $ - prompt2
     addprint db 'Sum: ', 0
-    subprint db 'Difference: ', 0
-    mulprint db 'Product: ', 0
-    divprint db 'Quotient: ', 0
-    divreminder db 'Remainder: ', 0
     addleng equ $ - addprint
+    subprint db 'Difference: ', 0
     subleng equ $ - subprint
+    mulprint db 'Product: ', 0
     mulleng equ $ - mulprint
+    divprint db 'Quotient: ', 0
     divleng equ $ - divprint
+    divreminder db 'Remainder: ', 0
     divreminderleng equ $ - divreminder
     newline db 10, 0
     newlinelen equ $ - newline
@@ -50,10 +50,6 @@ section .data
     sub al, bl
     add al, '0'
     mov [result], al
-    display subprint, subleng
-    display result, 1
-    display newline, newlinelen
-
 %endmacro
 
 %macro Multiplication 0
@@ -64,10 +60,6 @@ section .data
     mul bl
     add al, '0'
     mov [result], al
-    display mulprint, mulleng
-    display result, 1
-    display newline, newlinelen
-
 %endmacro
 
 %macro Division 0
@@ -81,14 +73,6 @@ section .data
     mov [result], al
     add ah, '0'
     mov [result2], ah
-    display divprint, divleng
-    display result, 1
-    display newline, newlinelen
-    
-    display divreminder, divreminderleng
-    display result, 1
-    display newline, newlinelen
-
 %endmacro
 
 section .bss
@@ -107,11 +91,33 @@ _start:
     display prompt2, len2
     input num2, 2
 
-    Addition num1,num2,result
-    display result,2
+    ; Addition operation
+    Addition num1, num2, result
+    display addprint, addleng
+    display result, 1
+    display newline, newlinelen
+    
+    ; Subtraction operation
     Subtraction
+    display subprint, subleng
+    display result, 1
+    display newline, newlinelen
+
+    ; Multiplication operation
     Multiplication
+    display mulprint, mulleng
+    display result, 1
+    display newline, newlinelen
+
+    ; Division operation
     Division
+    display divprint, divleng
+    display result, 1
+    display newline, newlinelen
+    
+    display divreminder, divreminderleng
+    display result2, 1
+    display newline, newlinelen
 
     mov eax, 1
     mov ebx, 0
