@@ -1,43 +1,38 @@
-# Microprocessors and Macro Controllers Lab
+# Microprocessor and Microcontroller Lab
 
-This repository contains the code and instructions for the Microprocessors and Micro Controllers lab sessions. The code is written in Assembly language and is intended to run on a Linux environment.
+This repository contains Assembly language code and instructions for the Microprocessor and Microcontroller lab sessions. The code is designed to run in a Linux environment and provides hands-on practice with fundamental concepts.
 
-## Prerequisites
+### Prerequisites  
+Ensure you have the following installed on your Linux-based system:
+- **NASM** (Netwide Assembler)  
+- **LD** (GNU Linker)  
+- **A Linux-based operating system**
 
-- NASM (Netwide Assembler)
-- LD (GNU Linker)
-- A Linux-based operating system
-
-## Getting Started
-
-To run the code, follow these steps:
-
-1. Assemble the code:
+### Getting Started  
+Follow these steps to assemble, link, and execute the program:
+1. **Assemble the code**:  
     ```sh
-    nasm -f elf hello.o
+    nasm -f elf hello.asm -o hello.o
     ```
-
-2. Link the object file:
-    ```sh
-    ld -s -o hello hello.o
-    ```
-    OR
+2. **Link the object file**:  
     ```sh
     ld -m elf_i386 -s -o hello hello.o
     ```
-
-3. Execute the program:
+3. **Run the executable**:  
     ```sh
     ./hello
     ```
+**Note:** Ensure that your system supports 32-bit binaries if you encounter compatibility issues.
 
-## Lab Exercises
+### Lab Exercises  
+- Each lab exercise is organized in its respective directory.  
+- Exercises are sequentially numbered for better understanding.  
+- The [`LAB_B`](./LAB_B) folder contains additional lab work and sample codes.
 
-Each lab exercise is contained in its own directory with codes numbered in order. Note that the [`LAB_B`](./LAB_B) folder contains the code for the other lab work.
-
-## Contributing
-
-If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+### Contributing  
+We welcome contributions! If you find any issues or have suggestions for improvements:
+- Open an issue in this repository.  
+- Submit a pull request with a clear description of the changes.
 
 ## License
 
