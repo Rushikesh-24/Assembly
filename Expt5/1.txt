@@ -1,0 +1,8 @@
+study of macros
+1.WAPL to implement right system call to display a number using macros
+2.WALP to implement right system call to display two numbers using macros
+3.WALP to impleent the read system call to input a number and display
+4.WALP to implement calculator fucntion using macros (6)
+5.WALP to print fibonacci series till n terms
+6.WALP to print your name 7 times
+7.WALP to implement read system call to implement two input calls
