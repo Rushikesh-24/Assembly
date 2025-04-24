@@ -46,12 +46,10 @@ section .text
     global _start
 
 _start:
-    ; Prompt for size
     print prompt_size, 30
     call read_int
     mov [size], eax
 
-    ; Input elements
     xor ebx, ebx
 input_loop:
     cmp ebx, [size]
@@ -63,17 +61,19 @@ input_loop:
     jmp input_loop
 input_done:
 
-    ; Prompt for target
     print prompt_target, 34
     call read_int
     mov [target], eax
 
-    ; Search for target
     xor ebx, ebx
 search_loop:
     cmp ebx, [size]
     jge not_found
 
+    print msg_iteration, 10
+    mov eax, ebx
+    inc eax
+    call print_int
     ; Print iteration info
     print msg_iteration, 10
     mov eax, ebx

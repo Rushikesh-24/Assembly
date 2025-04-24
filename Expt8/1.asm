@@ -12,51 +12,44 @@ space db " "
 newline db 10
 
 section .bss
-array resd 10       ; Reserve space for up to 10 integers (4 bytes each)
-count resb 1        ; Number of elements in the array
-buffer resb 16      ; Buffer for input
-num_buffer resb 16  ; Buffer for number conversion
+array resd 10       
+count resb 1     
+buffer resb 16     
+num_buffer resb 16  
 
 section .text
 global _start
 
 _start:
-    ; Display prompt for number of elements
     mov eax, 4
     mov ebx, 1
     mov ecx, prompt_msg
     mov edx, prompt_len
     int 80h
 
-    ; Read number of elements
     mov eax, 3
     mov ebx, 0
     mov ecx, buffer
-    mov edx, 2       ; Read character + newline
+    mov edx, 2       
     int 80h
 
-    ; Convert to integer and store in count
     movzx eax, byte [buffer]
     sub eax, '0'
     mov [count], al
 
-    ; Input array elements
-    xor esi, esi     ; Initialize counter
+    xor esi, esi   
 
 input_loop:
-    ; Check if we've reached the end
     movzx eax, byte [count]
     cmp esi, eax
     jge display_elements
 
-    ; Print "Enter element X: "
     mov eax, 4
     mov ebx, 1
     mov ecx, input_msg
     mov edx, input_len
     int 80h
 
-    ; Display element number (1-based)
     mov eax, esi
     inc eax
     add eax, '0'
@@ -67,7 +60,6 @@ input_loop:
     mov edx, 1
     int 80h
 
-    ; Print colon
     mov byte [buffer], ':'
     mov eax, 4
     mov ebx, 1
@@ -75,7 +67,6 @@ input_loop:
     mov edx, 1
     int 80h
 
-    ; Print space
     mov byte [buffer], ' '
     mov eax, 4
     mov ebx, 1
@@ -83,14 +74,12 @@ input_loop:
     mov edx, 1
     int 80h
 
-    ; Read input number
     mov eax, 3
     mov ebx, 0
     mov ecx, buffer
     mov edx, 8
     int 80h
 
-    ; Simple string to int conversion
     xor eax, eax
     xor ecx, ecx
 
@@ -107,38 +96,32 @@ convert_loop:
     jmp convert_loop
 
 done_convert:
-    ; Store in array
     mov [array + esi*4], eax
     inc esi
     jmp input_loop
 
 display_elements:
-    ; Display header
     mov eax, 4
     mov ebx, 1
     mov ecx, display_msg
     mov edx, display_len
     int 80h
 
-    ; Display array elements
     xor esi, esi
 
 display_loop:
-    ; Check if we've displayed all elements
+
     movzx eax, byte [count]
     cmp esi, eax
     jge exit_program
 
-    ; Get current element
     mov eax, [array + esi*4]
 
-    ; Convert int to string
     mov ebx, 10
     mov ecx, num_buffer
-    add ecx, 15      ; Start from end of buffer
-    mov byte [ecx], 0 ; Null terminator
+    add ecx, 15  
+    mov byte [ecx], 0 
 
-    ; Special case for zero
     test eax, eax
     jnz convert_number
     dec ecx
@@ -149,25 +132,22 @@ convert_number:
 to_string_loop:
     xor edx, edx
     div ebx
-    add dl, '0'      ; Convert remainder to ASCII
+    add dl, '0'     
     dec ecx
     mov [ecx], dl
     test eax, eax
     jnz to_string_loop
 
 print_number:
-    ; Calculate string length
     mov edx, num_buffer
     add edx, 15
     sub edx, ecx
 
-    ; Print number
     mov eax, 4
     mov ebx, 1
     mov ecx, ecx
     int 80h
 
-    ; Print space
     mov eax, 4
     mov ebx, 1
     mov ecx, space
@@ -178,14 +158,12 @@ print_number:
     jmp display_loop
 
 exit_program:
-    ; Print newline
     mov eax, 4
     mov ebx, 1
     mov ecx, newline
     mov edx, 1
     int 80h
 
-    ; Exit
     mov eax, 1
     xor ebx, ebx
     int 80h

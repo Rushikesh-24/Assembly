@@ -15,12 +15,12 @@ section .data
     newline db 10, 0
 
 section .bss
-    array resd 10         ; Reserve space for up to 10 integers (4 bytes each)
-    count resb 1          ; Number of elements in the array
-    even_count resb 1     ; Count of even numbers
-    odd_count resb 1      ; Count of odd numbers
-    buffer resb 16        ; Buffer for input
-    num_buffer resb 16    ; Buffer for number conversion
+    array resd 10        
+    count resb 1          
+    even_count resb 1     
+    odd_count resb 1      
+    buffer resb 16        
+    num_buffer resb 16    
 
 section .text
     global _start
@@ -49,33 +49,31 @@ string_to_int:
     push edx
     push edi
     xor eax, eax
-    xor edi, edi          ; Clear result and negative flag
-    mov ebx, 0            ; Clear index
-
-    ; Check for negative sign
+    xor edi, edi         
+    mov ebx, 0           
     cmp byte [ecx], '-'
     jne .convert_loop
-    mov ebx, 1            ; Set negative flag
-    inc ecx               ; Skip minus sign
+    mov ebx, 1           
+    inc ecx              
 
 .convert_loop:
     movzx edx, byte [ecx]
-    cmp edx, 10           ; Newline
+    cmp edx, 10         
     je .done_convert
-    cmp edx, 13           ; Carriage return
+    cmp edx, 13         
     je .done_convert
-    cmp edx, 0            ; Null terminator
+    cmp edx, 0          
     je .done_convert
-    sub edx, '0'          ; Convert to digit
-    imul eax, eax, 10     ; Multiply by 10
-    add eax, edx          ; Add new digit
+    sub edx, '0'        
+    imul eax, eax, 10   
+    add eax, edx        
     inc ecx
     jmp .convert_loop
 
 .done_convert:
     test ebx, ebx
     jz .finish_convert
-    neg eax               ; Make negative if needed
+    neg eax              
 
 .finish_convert:
     pop edi
@@ -92,8 +90,8 @@ display_number:
 
     mov ebx, 10
     mov ecx, num_buffer
-    add ecx, 15           ; Start from end of buffer
-    mov byte [ecx], 0     ; Null terminator
+    add ecx, 15          
+    mov byte [ecx], 0    
 
     test eax, eax
     jnz .convert_number
@@ -104,7 +102,7 @@ display_number:
 .convert_number:
     xor edx, edx
     div ebx
-    add dl, '0'           ; Convert remainder to ASCII
+    add dl, '0'        
     dec ecx
     mov [ecx], dl
     test eax, eax
@@ -123,34 +121,28 @@ display_number:
     ret
 
 _start:
-    ; Display prompt for number of elements
     mov ecx, prompt_msg
     mov edx, prompt_len
     call write_string
 
-    ; Read number of elements
     mov ecx, buffer
-    mov edx, 2            ; Read character + newline
+    mov edx, 2           
     call read_input
 
-    ; Convert to integer and store in count
     movzx eax, byte [buffer]
     sub eax, '0'
     mov [count], al
 
-    ; Initialize counters
     mov byte [even_count], 0
     mov byte [odd_count], 0
 
-    ; Input array elements
-    xor esi, esi          ; Initialize counter
+    xor esi, esi       
 
 .input_loop:
     movzx eax, byte [count]
     cmp esi, eax
     jge .count_elements
 
-    ; Print "Enter element X: "
     mov ecx, input_msg
     mov edx, input_len
     call write_string
@@ -163,21 +155,17 @@ _start:
     mov edx, 1
     call write_string
 
-    ; Print colon and space
     mov ecx, colon
     mov edx, 2
     call write_string
 
-    ; Read input number
     mov ecx, buffer
     mov edx, 8
     call read_input
 
-    ; Convert string to integer
     mov ecx, buffer
     call string_to_int
 
-    ; Store in array
     mov [array + esi*4], eax
     inc esi
     jmp .input_loop
@@ -191,10 +179,9 @@ _start:
     jge .display_results
 
     mov eax, [array + esi*4]
-    test eax, 1           ; Check if odd (last bit is 1)
+    test eax, 1         
     jz .is_even
 
-    ; Is odd
     inc byte [odd_count]
     jmp .next_count
 
@@ -206,7 +193,6 @@ _start:
     jmp .count_loop
 
 .display_results:
-    ; Display number of even elements
     mov ecx, even_msg
     mov edx, even_len
     call write_string
@@ -215,12 +201,10 @@ _start:
     mov ecx, eax
     call display_number
 
-    ; Print newline
     mov ecx, newline
     mov edx, 1
     call write_string
 
-    ; Display number of odd elements
     mov ecx, odd_msg
     mov edx, odd_len
     call write_string
@@ -229,12 +213,10 @@ _start:
     mov ecx, eax
     call display_number
 
-    ; Print newline
     mov ecx, newline
     mov edx, 1
     call write_string
 
-    ; Exit
     mov eax, 1
     xor ebx, ebx
     int 80h
