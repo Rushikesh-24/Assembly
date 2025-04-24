@@ -1,16 +1,12 @@
 section .data
 prompt_msg db "Enter the number of elements (1-9): ", 0
 prompt_len equ $ - prompt_msg
-
 input_msg db "Enter element ", 0
 input_len equ $ - input_msg
-
 above_msg db "Number of elements above 5: ", 0
 above_len equ $ - above_msg
-
 below_msg db "Number of elements below 5: ", 0
 below_len equ $ - below_msg
-
 equal_msg db "Number of elements equal to 5: ", 0
 equal_len equ $ - equal_msg
 
@@ -18,13 +14,13 @@ colon db ": ", 0
 newline db 10, 0
 
 section .bss
-array resd 10          ; Reserve space for up to 10 integers (4 bytes each)
-count resb 1           ; Number of elements in the array
-above_count resb 1     ; Count of numbers above 5
-below_count resb 1     ; Count of numbers below 5
-equal_count resb 1     ; Count of numbers equal to 5
-buffer resb 16         ; Buffer for input
-num_buffer resb 16     ; Buffer for number conversion
+array resd 10
+count resb 1
+above_count resb 1
+below_count resb 1
+equal_count resb 1
+buffer resb 16
+num_buffer resb 16
 
 section .text
 global _start
@@ -32,8 +28,8 @@ global _start
 write_string:
     push eax
     push ebx
-    mov eax, 4          ; sys_write
-    mov ebx, 1          ; stdout
+    mov eax, 4
+    mov ebx, 1
     int 80h
     pop ebx
     pop eax
@@ -41,8 +37,8 @@ write_string:
 
 read_input:
     push ebx
-    mov eax, 3          ; sys_read
-    mov ebx, 0          ; stdin
+    mov eax, 3
+    mov ebx, 0
     int 80h
     pop ebx
     ret
@@ -53,33 +49,31 @@ string_to_int:
     push edx
     push edi
     xor eax, eax
-    xor edi, edi        ; Clear result and flag for negative
-    mov ebx, 0          ; Clear index
-
-    ; Check for negative sign
+    xor edi, edi
+    mov ebx, 0
     cmp byte [ecx], '-'
     jne .convert_loop
-    mov ebx, 1          ; Set negative flag
-    inc ecx             ; Skip minus sign
+    mov ebx, 1
+    inc ecx
 
 .convert_loop:
     movzx edx, byte [ecx]
-    cmp edx, 10         ; Newline
+    cmp edx, 10
     je .done_convert
-    cmp edx, 13         ; Carriage return
+    cmp edx, 13
     je .done_convert
-    cmp edx, 0          ; Null terminator
+    cmp edx, 0
     je .done_convert
-    sub edx, '0'        ; Convert to digit
-    imul eax, eax, 10   ; Multiply by 10
-    add eax, edx        ; Add new digit
+    sub edx, '0'
+    imul eax, eax, 10
+    add eax, edx
     inc ecx
     jmp .convert_loop
 
 .done_convert:
     test ebx, ebx
     jz .finish_convert
-    neg eax             ; Make negative if needed
+    neg eax
 
 .finish_convert:
     pop edi
@@ -93,12 +87,10 @@ display_number:
     push ebx
     push ecx
     push edx
-
     mov ebx, 10
     mov ecx, num_buffer
-    add ecx, 15         ; Start from end of buffer
-    mov byte [ecx], 0   ; Null terminator
-
+    add ecx, 15
+    mov byte [ecx], 0
     test eax, eax
     jnz .convert_number
     dec ecx
@@ -108,7 +100,7 @@ display_number:
 .convert_number:
     xor edx, edx
     div ebx
-    add dl, '0'         ; Convert remainder to ASCII
+    add dl, '0'
     dec ecx
     mov [ecx], dl
     test eax, eax
@@ -119,7 +111,6 @@ display_number:
     add edx, 15
     sub edx, ecx
     call write_string
-
     pop edx
     pop ecx
     pop ebx
@@ -127,39 +118,27 @@ display_number:
     ret
 
 _start:
-    ; Display prompt for number of elements
     mov ecx, prompt_msg
     mov edx, prompt_len
     call write_string
-
-    ; Read number of elements
     mov ecx, buffer
-    mov edx, 2          ; Read character + newline
+    mov edx, 2
     call read_input
-
-    ; Convert to integer and store in count
     movzx eax, byte [buffer]
     sub eax, '0'
     mov [count], al
-
-    ; Initialize counters
     mov byte [above_count], 0
     mov byte [below_count], 0
     mov byte [equal_count], 0
-
-    ; Input array elements
-    xor esi, esi         ; Initialize counter
+    xor esi, esi
 
 .input_loop:
     movzx eax, byte [count]
     cmp esi, eax
     jge .count_elements
-
-    ; Print "Enter element X: "
     mov ecx, input_msg
     mov edx, input_len
     call write_string
-
     mov eax, esi
     inc eax
     add eax, '0'
@@ -167,22 +146,14 @@ _start:
     mov ecx, buffer
     mov edx, 1
     call write_string
-
-    ; Print colon and space
     mov ecx, colon
     mov edx, 2
     call write_string
-
-    ; Read input number
     mov ecx, buffer
     mov edx, 8
     call read_input
-
-    ; Convert string to integer
     mov ecx, buffer
     call string_to_int
-
-    ; Store in array
     mov [array + esi*4], eax
     inc esi
     jmp .input_loop
@@ -194,13 +165,10 @@ _start:
     movzx eax, byte [count]
     cmp esi, eax
     jge .display_results
-
     mov eax, [array + esi*4]
     cmp eax, 5
     je .is_equal
     jg .is_above
-
-    ; Is below 5
     inc byte [below_count]
     jmp .next_count
 
@@ -216,7 +184,6 @@ _start:
     jmp .count_loop
 
 .display_results:
-    ; Display number of elements above 5
     mov ecx, above_msg
     mov edx, above_len
     call write_string
@@ -226,8 +193,6 @@ _start:
     mov ecx, newline
     mov edx, 1
     call write_string
-
-    ; Display number of elements below 5
     mov ecx, below_msg
     mov edx, below_len
     call write_string
@@ -237,8 +202,6 @@ _start:
     mov ecx, newline
     mov edx, 1
     call write_string
-
-    ; Display number of elements equal to 5
     mov ecx, equal_msg
     mov edx, equal_len
     call write_string
@@ -248,8 +211,6 @@ _start:
     mov ecx, newline
     mov edx, 1
     call write_string
-
-    ; Exit
     mov eax, 1
     xor ebx, ebx
     int 80h

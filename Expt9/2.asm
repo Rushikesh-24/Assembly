@@ -49,10 +49,9 @@ section .bss
     right resd 1
 
 section .text
-    global start
+    global _start
 
-start:
-    ; Prompt for size
+_start:
     print prompt_size, 30
     call readint
     mov [size], eax
@@ -71,12 +70,10 @@ start:
     pop ecx
     loop .input_loop
 
-    ; Prompt for target
     print prompt_target, 34
     call readint
     mov [target], eax
 
-    ; Initialize binary search variables
     mov dword [left], 0
     mov eax, [size]
     dec eax
@@ -88,13 +85,11 @@ start:
     cmp eax, [right]
     jg .not_found
 
-    ; Calculate mid
     mov edx, eax
     add edx, [right]
     shr edx, 1
     mov [index], edx
 
-    ; Print iteration details
     print msg_iteration, 10
     mov eax, [iteration_count]
     call printint
@@ -113,7 +108,6 @@ start:
     call printint
     print newline, 1
 
-    ; Compare target with mid value
     mov edx, [index]
     mov esi, [array + edx * 4]
     cmp [target], esi
