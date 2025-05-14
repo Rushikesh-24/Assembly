@@ -1,50 +1,31 @@
 section .data
-    prompt1 db 'Enter the first number: ', 0
-    len1 equ $ - prompt1
-    prompt2 db 'Enter the second number: ', 0
-    len2 equ $ - prompt2
-    prompt3 db 'Entered Number: ', 0
-    len3 equ $ - prompt3
-    newline db 0xa
+    prompt db 'Enter a string: ', 0
+    len_prompt equ $ - prompt
+    output db 'Entered String: ', 0
+    len_output equ $ - output
 
 section .bss
-    num1 resb 2
-    num2 resb 2
+    input_str resb 100
 
 section .text
     global _start
 
 _start:
-    ; Display prompt1 and input num1
-    mov ecx, prompt1
-    mov edx, len1
+    ; Display prompt and input string
+    mov ecx, prompt
+    mov edx, len_prompt
     call display
-    mov ecx, num1
-    mov edx, 2
+    mov ecx, input_str
+    mov edx, 100
     call input
+    call strip_newline
 
-    ; Display prompt2 and input num2
-    mov ecx, prompt2
-    mov edx, len2
+    ; Display output and input string
+    mov ecx, output
+    mov edx, len_output
     call display
-    mov ecx, num2
-    mov edx, 2
-    call input
-
-    ; Display prompt3 and num1
-    mov ecx, prompt3
-    mov edx, len3
-    call display
-    mov ecx, num1
-    mov edx, 2
-    call display
-
-    ; Display prompt3 and num2
-    mov ecx, prompt3
-    mov edx, len3
-    call display
-    mov ecx, num2
-    mov edx, 2
+    mov ecx, input_str
+    mov edx, 100
     call display
 
     ; Exit
@@ -68,4 +49,26 @@ input:
     mov eax, 3
     mov ebx, 0
     int 80h
+    ret
+
+;----------------------------------------
+; strip_newline: replaces newline with 0
+; expects ecx = buffer, edx = buffer size
+;----------------------------------------
+strip_newline:
+    push ecx
+    push edx
+    mov esi, ecx
+    mov ecx, edx
+find_nl:
+    lodsb
+    cmp al, 0xa
+    jne not_nl
+    mov byte [esi-1], 0
+    jmp done_nl
+not_nl:
+    loop find_nl
+done_nl:
+    pop edx
+    pop ecx
     ret
